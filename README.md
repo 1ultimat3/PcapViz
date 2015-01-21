@@ -7,4 +7,10 @@ Visualize network topologies and collect graph statistics based on pcap files
 - Print frequently contacted machines
 
 ## Example
-![](http://sungli.de/pcapviz/e1.png)
+Example pcap: [smallFlows.pcap](http://tcpreplay.appneta.com/wiki/captures.html#bigflows-pcap)
+
+```python
+python main.py -i smallFlows.pcap -o small_tcp.png --layer3
+```
+
+![](http://sungli.de/static/pcapviz/0_small_tcp.png)
