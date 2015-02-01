@@ -22,7 +22,6 @@ if __name__ == '__main__':
         if args.exclude:
             packet_ls = exclude_ips(packet_lists=packet_ls, ips=args.exclude)
         if args.layer2:
-            packet_ls = get_layer(packet_lists=packet_ls, layer="Ether")
             edges = generate_layer2_edges(packet_lists=packet_ls)
         else:
             packet_ls = get_layer(packet_lists=packet_ls, layer="IP")
