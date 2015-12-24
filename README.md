@@ -1,5 +1,5 @@
 # PcapViz
-Visualize network topologies and collect graph statistics based on pcap files
+PcapViz visualizes network topologies and provides graph statistics based on pcap files.
 
 ## Features
 - Draw network topologies (Layer 2) and communication graphs (Layer 3)
@@ -8,11 +8,11 @@ Visualize network topologies and collect graph statistics based on pcap files
 ## Example
 Example pcap: [smallFlows.pcap](http://tcpreplay.appneta.com/wiki/captures.html#smallflows-pcap)
 
-Drawing a communication graph:
+Drawing a communication graph (Layer 3):
 ```python
 python main.py -i smallFlows.pcap -o small_tcp.png --layer3
 ```
-![](http://sungli.de/static/pcapviz/0_small_tcp.png)
+![](https://gentle-wave-6212.herokuapp.com/static/pcapviz/0_small_tcp.png)
 
 Return most frequently contacted hosts:
 ```python
