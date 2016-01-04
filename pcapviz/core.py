@@ -12,7 +12,7 @@ import os
 
 
 class GraphManager(object):
-    """ Generates the graph based on packets
+    """ Generates and processes the graph based on packets
     """
 
     def __init__(self, packets, layer=3, geo_ip=os.path.expanduser('~/GeoIP.dat')):
@@ -112,13 +112,7 @@ class GraphManager(object):
             _ = packet[2]
             return "%s:%i" % (src, _.sport), "%s:%i" % (dst, _.dport), packet
 
-    #TODO draw should be using .dot? + graphviz?
     def draw(self, filename=None, figsize=(50, 50)):
-        # TODO this is how it was used with matplotlib
-        #plt.figure(figsize=figsize)
-        #networkx.draw(self.graph, node_size=4500, width=3.0, with_labels=True, font_size=8, alpha=.5)
-        #if filename:
-        #    plt.savefig("%s" % filename)
         graph = self.get_graphviz_format()
 
         for node in graph.nodes():
@@ -142,7 +136,7 @@ class GraphManager(object):
             edge.attr['minlen'] = '2'
             edge.attr['penwidth'] = min(connection['connections'] * 1.0 / len(self.graph.nodes()), 2.0)
 
-        graph.layout(prog='dot') # TODO add infos on adding edge? #TODO investigate segmentation fault in twopi layout
+        graph.layout(prog='dot')
         graph.draw(filename)
 
     #TODO do we need a .dot file export?
