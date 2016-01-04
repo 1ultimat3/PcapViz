@@ -34,25 +34,25 @@ optional arguments:
 Example pcap: [smallFlows.pcap](http://tcpreplay.appneta.com/wiki/captures.html#smallflows-pcap)
 
 Drawing a communication graph (layer 2), segment:
-```python
+```
 python main.py -i smallFlows.pcap -o small_tcp_l2.png --layer2
 ```
 ![](https://gentle-wave-6212.herokuapp.com/static/pcapviz/layer2.png)
 
 Drawing a communication graph (layer 3), segment:
-```python
+```
 python main.py -i smallFlows.pcap -o small_tcp.png --layer3
 ```
 ![](https://gentle-wave-6212.herokuapp.com/static/pcapviz/layer3.png)
 
-Drawing a communication graph (layer 3), segment:
-```python
+Drawing a communication graph (layer 4), segment:
+```
 python main.py -i smallFlows.pcap -o small_tcp_l4.png --layer4
 ```
 ![](https://gentle-wave-6212.herokuapp.com/static/pcapviz/layer4.png)
 
 Return most frequently contacted hosts:
-```python
+```
 python main.py -i smallFlows.pcap --layer3 --frequent-in
 
 115 172.16.255.1
