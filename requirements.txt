@@ -1,2 +1,6 @@
-scapy
+scapy-python3
+scapy-http
+matplotlib
 networkx
+pygeoip
+pygraphviz
