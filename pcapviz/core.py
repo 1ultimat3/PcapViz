@@ -141,7 +141,7 @@ class GraphManager(object):
 
     #TODO do we need a .dot file export?
     def get_graphviz_format(self, filename=None):
-        agraph = networkx.to_agraph(self.graph)
+        agraph = networkx.drawing.nx_agraph.to_agraph(self.graph)
         if filename:
             agraph.write(filename)
         return agraph
