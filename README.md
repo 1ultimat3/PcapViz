@@ -80,3 +80,12 @@ Required:
 pip install -r requirements.txt
 ```
 
+For Debian-based distros you have to install GraphViz with some additional dependencies:
+
+```
+apt-get install python3-dev
+apt-get install graphviz libgraphviz-dev pkg-config
+
+```
+
+
