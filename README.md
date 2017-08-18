@@ -85,10 +85,10 @@ pip install -r requirements.txt
 Python2.x requirements can be installed as follows:
 
 ```
-pip install -r requirements\_python2.txt
+pip install -r requirements_python2.txt
 ```
 
-### Installation Hints Debian
+### Installation Debian
 
 For Debian-based distros you have to install GraphViz with some additional dependencies:
 
@@ -97,7 +97,7 @@ apt-get install python3-dev
 apt-get install graphviz libgraphviz-dev pkg-config
 ```
 
-### Installation Hints OSX
+### Installation OSX
 
 Scapy does not work out-of-the-box on OSX. Follow the platform specific instruction from the [scapy website](http://scapy.readthedocs.io/en/latest/installation.html#platform-specific-instructions)
 
