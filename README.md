@@ -76,9 +76,18 @@ Required:
  * GraphViz
  * Download GeoIP database to ~/GeoIP.dat (http://dev.maxmind.com/geoip/legacy/install/country/)
 
+In case you are using python3 install the following requirements:
+
 ```
 pip install -r requirements.txt
 ```
+
+Python2.x requirements can be installed as follows:
+
+```
+pip install -r requirements_python2.txt
+```
+
 
 For Debian-based distros you have to install GraphViz with some additional dependencies:
 
