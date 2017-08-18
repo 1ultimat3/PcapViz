@@ -85,9 +85,8 @@ pip install -r requirements.txt
 Python2.x requirements can be installed as follows:
 
 ```
-pip install -r requirements_python2.txt
+pip install -r requirements\_python2.txt
 ```
-
 
 ### Installation Hints Debian
 
@@ -100,11 +99,12 @@ apt-get install graphviz libgraphviz-dev pkg-config
 
 ### Installation Hints OSX
 
-Make sure to install GraphViz before resolving the python requirements:
+Scapy does not work out-of-the-box on OSX. Follow the platform specific instruction from the [scapy website](http://scapy.readthedocs.io/en/latest/installation.html#platform-specific-instructions)
 
 ```
 brew install graphviz
+brew install --with-python libdnet
+brew install https://raw.githubusercontent.com/secdev/scapy/master/.travis/pylibpcap.rb
 ```
-
 
 
