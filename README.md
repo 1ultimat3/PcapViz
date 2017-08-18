@@ -88,7 +88,7 @@ Python2.x requirements can be installed as follows:
 pip install -r requirements_python2.txt
 ```
 
-### Installation Debian
+### Installation Debian
 
 For Debian-based distros you have to install GraphViz with some additional dependencies:
 
