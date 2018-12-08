@@ -39,7 +39,8 @@ class GraphManager(object):
             if src in self.graph and dst in self.graph[src]:
                 self.graph[src][dst]['packets'].append(packet)
             else:
-                self.graph.add_edge(src, dst, {'packets': [packet]})
+                self.graph.add_edge(src, dst)
+                self.graph[src][dst]['packets'] = [packet]
 
         for node in self.graph.nodes():
             self._retrieve_node_info(node)
@@ -57,7 +58,7 @@ class GraphManager(object):
 
     @staticmethod
     def _sorted_results(unsorted_degrees, print_stdout):
-        sorted_degrees = OrderedDict(sorted(unsorted_degrees.items(), key=lambda t: t[1], reverse=True))
+        sorted_degrees = OrderedDict(sorted(list(unsorted_degrees), key=lambda t: t[1], reverse=True))
         for i in sorted_degrees:
             if print_stdout:
                 print(sorted_degrees[i], i)
@@ -72,8 +73,13 @@ class GraphManager(object):
                 self.data[node]['ip'] = node.split(':')[0]
 
             node_ip = self.data[node]['ip']
-            country = self.geo_ip.country_name_by_addr(node_ip)
-            self.data[node]['country'] = country if country else 'private'
+            try:
+                country = self.geo_ip.country_name_by_addr(node_ip)
+                self.data[node]['country'] = country if country else 'private'
+            except:
+                # it seems like we are not dealing with valid IPs...
+                # best effort approach: skip
+                del self.data[node]
         #TODO layer 2 info?
 
     def _retrieve_edge_info(self, src, dst):
@@ -116,6 +122,9 @@ class GraphManager(object):
         graph = self.get_graphviz_format()
 
         for node in graph.nodes():
+            if node not in self.data:
+                # node might be deleted, because it's not legit etc.
+                continue
             node.attr['shape'] = 'circle'
             node.attr['fontsize'] = '10'
             node.attr['width'] = '0.5'
@@ -131,7 +140,7 @@ class GraphManager(object):
                     #TODO add color based on country or scan?
         for edge in graph.edges():
             connection = self.graph[edge[0]][edge[1]]
-            edge.attr['label'] = 'transmitted: %i bytes\n%s ' % (connection['transmitted'],  ' | '.join(connection['layers']))
+            edge.attr['label'] = 'transmitted: %i bytes\n%s ' % (connection['transmitted'], ' | '.join(connection['layers']))
             edge.attr['fontsize'] = '8'
             edge.attr['minlen'] = '2'
             edge.attr['penwidth'] = min(connection['connections'] * 1.0 / len(self.graph.nodes()), 2.0)
@@ -139,7 +148,6 @@ class GraphManager(object):
         graph.layout(prog='dot')
         graph.draw(filename)
 
-    #TODO do we need a .dot file export?
     def get_graphviz_format(self, filename=None):
         agraph = networkx.drawing.nx_agraph.to_agraph(self.graph)
         if filename:
