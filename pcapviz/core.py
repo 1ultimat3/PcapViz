@@ -118,9 +118,8 @@ class GraphManager(object):
             _ = packet[2]
             return "%s:%i" % (src, _.sport), "%s:%i" % (dst, _.dport), packet
 
-    def draw(self, filename=None, figsize=(50, 50)):
+    def draw(self, filename=None):
         graph = self.get_graphviz_format()
-
         for node in graph.nodes():
             if node not in self.data:
                 # node might be deleted, because it's not legit etc.
@@ -150,6 +149,9 @@ class GraphManager(object):
 
     def get_graphviz_format(self, filename=None):
         agraph = networkx.drawing.nx_agraph.to_agraph(self.graph)
+        # remove packet information (blows up file size)
+        for edge in agraph.edges():
+            del edge.attr['packets']
         if filename:
             agraph.write(filename)
         return agraph
