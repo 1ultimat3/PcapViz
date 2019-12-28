@@ -1,6 +1,13 @@
 NOTE: forked from mateuszk87/PcapViz
 december 2019 
 changed geoIP lookup to use maxminddb
+removed pygeoip dependency
+
+use:
+```
+pip3 install maxminddb
+```
+to install dependency
 
 Maxmind free GeoIP data available using:
 

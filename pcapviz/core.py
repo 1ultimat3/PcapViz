@@ -5,7 +5,6 @@ import itertools
 from networkx import DiGraph
 
 from scapy.layers.inet import TCP, IP, UDP
-#from pygeoip import GeoIP
 import logging
 
 import os
@@ -26,11 +25,10 @@ class GraphManager(object):
 		self.geo_ip = None
 		self.args = args
 		self.data = {}
-		print('##args.geopath',self.args.geopath)
 		try:
 			self.geo_ip = maxminddb.open_database(self.args.geopath) # command line -G
 		except:
-			logging.warning("could not load GeoIP data from supplied path %s" % self.args.geopath)
+			logging.warning("could not load GeoIP data from supplied parameter geopath %s" % self.args.geopath)
 
 		if self.layer == 2:
 			edges = map(self._layer_2_edge, packets)
@@ -85,14 +83,14 @@ class GraphManager(object):
 				if mmdbrec != None:
 					countryrec = mmdbrec.get('city',None)
 					cityrec = mmdbrec.get('country',None)
-					if countryrec:
+					if countryrec: # some records have one but not the other....
 						country = countryrec['names'].get(self.args.geolang,None)
 					if cityrec:
 						city =  cityrec['names'].get(self.args.geolang,None)
 				self.data[node]['country'] = country if country else 'private'
 				self.data[node]['city'] = city if city else 'private'
-				print('### retrieve_node_info country and city',self.data[node]['ip'],self.data[node]['country'],self.data[node]['country'])
 			except:
+				# no lookup so not much data available
 				del self.data[node]
 				
 		#TODO layer 2 info?
