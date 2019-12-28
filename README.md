@@ -1,9 +1,13 @@
-# NOTE: forked from mateuszk87/PcapViz
-# december 2019 
-# changed geoIP lookup to use maxminddb
-# samples
+NOTE: forked from mateuszk87/PcapViz
+december 2019 
+changed geoIP lookup to use maxminddb
+
+Sample images:
+
 [layer 2 sample](examplelayer2.png)
+
 [layer 3 sample](examplelayer3.png)
+
 [layer 4 sample](examplelayer4.png)
 
 
