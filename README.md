@@ -18,7 +18,7 @@ wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
 For zeek, you need to unpack the file and move GeoIP/GeoLite2-City.mmdb to 
 /usr/share/GeoIP/GeoLite2-City.mmdb so that's where I put mine.
 
-To test:
+To test the geoip lookup, with my python3 virtualenv, I used:
 
 ```
 >python3
@@ -37,11 +37,46 @@ Type "help", "copyright", "credits" or "license" for more information.
 'ru': 'Новый Южный Уэльс'}}]}
 ```
 
+Some additional command line options are now available for the geoIP database path, the language for the geoIP lookup (default is en) and the Graphviz
+layout engine to use (default is sfdp to give compact layouts - dot gives **very** wide, flat images - there are half a dozen others to try.
+
+```
+>python3 main.py -h
+
+usage: main.py [-h] [-i [PCAPS [PCAPS ...]]] [-o OUT] [-g GRAPHVIZ] [--layer2]
+               [--layer3] [--layer4] [-fi] [-fo] [-G] [-l] [-E]
+
+pcap topology drawer
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i [PCAPS [PCAPS ...]], --pcaps [PCAPS [PCAPS ...]]
+                        capture files to be analyzed
+  -o OUT, --out OUT     topology will be stored in the specified file
+  -g GRAPHVIZ, --graphviz GRAPHVIZ
+                        graph will be exported to the specified file (dot
+                        format)
+  --layer2              create layer2 topology
+  --layer3              create layer3 topology
+  --layer4              create layer4 topology
+  -fi, --frequent-in    print frequently contacted nodes to stdout
+  -fo, --frequent-out   print frequent source nodes to stdout
+  -G, --geopath         path to maxmind geodb data
+  -l, --geolang         Language to use for geoIP names
+  -E, --layoutengine    Graph layout method - dot, sfdp etc.
+```
+
 Sample images:
+
+**Layer2**
 
 ![layer 2 sample](examplelayer2.png)
 
+**Layer3**
+
 ![layer 3 sample](examplelayer3.png)
+
+**Layer4**
 
 ![layer 4 sample](examplelayer4.png)
 

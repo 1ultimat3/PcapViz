@@ -17,6 +17,7 @@ if __name__ == '__main__':
     parser.add_argument('-fo', '--frequent-out', action='store_true', help='print frequent source nodes to stdout')
     parser.add_argument('-G', '--geopath', default='/usr/share/GeoIP/GeoLite2-City.mmdb', action='store_true', help='path to maxmind geodb data')
     parser.add_argument('-l', '--geolang', default='en', action='store_true', help='Language to use for geoIP names')
+    parser.add_argument('-E', '--layoutengine', default='sfdp', action='store_true', help='Graph layout method - dot, sfdp etc.')
     args = parser.parse_args()
 
     if args.pcaps:
@@ -33,7 +34,7 @@ if __name__ == '__main__':
         else:
             layer = 3
 
-        g = GraphManager(packets, layer=layer,args=args)
+        g = GraphManager(packets, layer=layer, args=args)
 
         if args.out:
             g.draw(filename=args.out)

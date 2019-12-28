@@ -8,12 +8,16 @@ from scapy.layers.inet import TCP, IP, UDP
 import logging
 
 import os
+import socket
 import maxminddb
 
 """
 ross lazarus december 2019 forked from mateuszk87/PcapViz
 changed geoIP lookup to use maxminddb
+added reverse DNS lookup and cache
 """
+
+
 
 class GraphManager(object):
 	""" Generates and processes the graph based on packets
@@ -25,6 +29,7 @@ class GraphManager(object):
 		self.geo_ip = None
 		self.args = args
 		self.data = {}
+		self.deeNS = {} # cache for reverse lookups
 		try:
 			self.geo_ip = maxminddb.open_database(self.args.geopath) # command line -G
 		except:
@@ -51,6 +56,15 @@ class GraphManager(object):
 
 		for src, dst in self.graph.edges():
 			self._retrieve_edge_info(src, dst)
+
+	def lookup(self,ip):
+		"""deens caches all slow! fqdn reverse dns lookups from ip"""
+		kname = self.deeNS.get(ip,None)
+		if kname == None:
+			kname = socket.getfqdn(ip) # PIA dns is slow!!
+			self.deeNS[ip] = kname
+		return (kname)
+
 
 	def get_in_degree(self, print_stdout=True):
 		unsorted_degrees = self.graph.in_degree()
@@ -133,26 +147,35 @@ class GraphManager(object):
 			return "%s:%i" % (src, _.sport), "%s:%i" % (dst, _.dport), packet
 
 	def draw(self, filename=None):
+		self.graph.label ="Layer %d traffic graph for packets from %s" % (self.layer,str(self.args.pcaps))
+
 		graph = self.get_graphviz_format()
+		
 		for node in graph.nodes():
 			if node not in self.data:
 				# node might be deleted, because it's not legit etc.
 				continue
-			node.attr['shape'] = 'circle'
+			snode = str(node)
+			node.attr['shape'] = 'diamond'
 			node.attr['fontsize'] = '10'
 			node.attr['width'] = '0.5'
 			node.attr['color'] = 'linen'
-			node.attr['style'] = 'filled'
-			if 'country' in self.data[str(node)]:
-				country_label = self.data[str(node)]['country']
-				city_label = self.data[str(node)]['city']
-				if country_label == 'private':
-					node.attr['label'] = str(node)
+			node.attr['style'] = 'rounded,filled'
+			if 'country' in self.data[snode]:
+				country_label = self.data[snode]['country']
+				city_label = self.data[snode]['city']
+				nnode = self.lookup(snode)
+				if nnode != snode:
+					nodelab = '%s\n%s' % (nnode,snode)
 				else:
+					nodelab = snode
+					
+				if country_label != 'private':
 					if city_label == 'private':
-						node.attr['label'] = "%s\n(%s)" % (str(node), country_label)
+						nodelab += "\n(%s)" % (country_label)
 					else:
-						node.attr['label'] = "%s\n(%s %s)" % (str(node), country_label, city_label)
+						nodelab += "\n(%s, %s)" % (city_label, country_label)
+				node.attr['label'] = nodelab
 				if not (country_label == 'private'):
 					node.attr['color'] = 'lightyellow'
 					#TODO add color based on country or scan?
@@ -162,8 +185,7 @@ class GraphManager(object):
 			edge.attr['fontsize'] = '8'
 			edge.attr['minlen'] = '2'
 			edge.attr['penwidth'] = min(connection['connections'] * 1.0 / len(self.graph.nodes()), 2.0)
-
-		graph.layout(prog='dot')
+		graph.layout(prog=self.args.layoutengine)
 		graph.draw(filename)
 
 	def get_graphviz_format(self, filename=None):
