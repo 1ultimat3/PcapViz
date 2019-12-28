@@ -66,19 +66,19 @@ optional arguments:
   -E, --layoutengine    Graph layout method - dot, sfdp etc.
 ```
 
-Sample images:
+Sample images (using dot layout in graphviz):
 
-**Layer2**
+**Layer2 with default sfdp layout**
 
-![layer 2 sample](examplelayer2.png)
+![layer 2 sample](examplelayer2.pdf)
 
-**Layer3**
+**Layer3 with default sfdp layout**
 
-![layer 3 sample](examplelayer3.png)
+![layer 3 sample](examplelayer3.pdf)
 
-**Layer4**
+**Layer4 with dot layout**
 
-![layer 4 sample](examplelayer4.png)
+![layer 4 sample](examplelayer4.pdf)
 
 
 Original notes follow below - example images and maxmind files no longer available and currently working
