@@ -4,14 +4,17 @@ changed geoIP lookup to use maxminddb
 
 Data available using:
 
-```wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz```
+```
+wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
+```
 
 For zeek, you need to unpack the file and move GeoIP/GeoLite2-City.mmdb' to 
 /usr/share/GeoIP/GeoLite2-City.mmdb so that's where I put mine.
 
 To test:
 
-```>python3
+```
+>python3
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import maxminddb
 >>> reader = maxminddb.open_database('/usr/share/GeoIP/GeoLite2-City.mmdb')
