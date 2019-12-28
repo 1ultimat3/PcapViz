@@ -4,11 +4,11 @@ changed geoIP lookup to use maxminddb
 
 Sample images:
 
-[layer 2 sample](examplelayer2.png)
+![layer 2 sample](examplelayer2.png)
 
-[layer 3 sample](examplelayer3.png)
+![layer 3 sample](examplelayer3.png)
 
-[layer 4 sample](examplelayer4.png)
+![layer 4 sample](examplelayer4.png)
 
 
 
