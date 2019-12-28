@@ -8,32 +8,39 @@ It should be possible to determine key topological nodes or data exfiltration at
 - Collect statistics such as most frequently contacted machines
 
 ## Usage
+
 ```
 usage: main.py [-h] [-i [PCAPS [PCAPS ...]]] [-o OUT] [-g GRAPHVIZ] [--layer2]
-               [--layer3] [--layer4] [-fi] [-fo] 
+               [--layer3] [--layer4] [-fi] [-fo] [-G GEOPATH] [-l GEOLANG]
+               [-E LAYOUTENGINE]
 
 pcap topology drawer
 
 optional arguments:
   -h, --help            show this help message and exit
   -i [PCAPS [PCAPS ...]], --pcaps [PCAPS [PCAPS ...]]
-                        capture files
+                        capture files to be analyzed
   -o OUT, --out OUT     topology will be stored in the specified file
   -g GRAPHVIZ, --graphviz GRAPHVIZ
                         graph will be exported to the specified file (dot
                         format)
-  --layer2              derive layer2 topology
-  --layer3              derive layer3 topology
-  --layer4              derive layer4 topology
+  --layer2              create layer2 topology
+  --layer3              create layer3 topology
+  --layer4              create layer4 topology
   -fi, --frequent-in    print frequently contacted nodes to stdout
   -fo, --frequent-out   print frequent source nodes to stdout
-  -G, --geopath		path to maxminddb data default='/usr/share/GeoIP/GeoLite2-City.mmdb'
-  -l, --geolang		language code to use for city/country lookups default='en'
+  -G GEOPATH, --geopath GEOPATH
+                        path to maxmind geodb data
+  -l GEOLANG, --geolang GEOLANG
+                        Language to use for geoIP names
+  -E LAYOUTENGINE, --layoutengine LAYOUTENGINE
+                        Graph layout method - dot, sfdp etc.
+
 ```
 
-## Example
+## Examples
 
-Drawing a communication graph (layer 2), segment:
+**Drawing a communication graph (layer 2), segment**
 ```
 python main.py -i tests/test.pcap -o test2.png --layer2
 ```
@@ -142,4 +149,13 @@ brew install --with-python libdnet
 brew install https://raw.githubusercontent.com/secdev/scapy/master/.travis/pylibpcap.rb
 ```
 
+## Testing
+
+Unit tests can be run from the tests directory:
+```
+python3 core.py
+```
+The sample images above are test outputs.
+
+Note that there are at present 2 warnings about deprecated features in graphviz and for tests to work, you may need to adjust the fake args to point to your copy of the geoIP data file.
 
