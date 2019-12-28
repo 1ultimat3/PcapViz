@@ -2,6 +2,30 @@ NOTE: forked from mateuszk87/PcapViz
 december 2019 
 changed geoIP lookup to use maxminddb
 
+Data available using:
+
+```wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz```
+
+For zeek, you need to unpack the file and move GeoIP/GeoLite2-City.mmdb' to 
+/usr/share/GeoIP/GeoLite2-City.mmdb so that's where I put mine.
+
+To test:
+
+```>python3
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import maxminddb
+>>> reader = maxminddb.open_database('/usr/share/GeoIP/GeoLite2-City.mmdb')
+>>> reader.get('137.59.252.179')
+{'city': {'geoname_id': 2147714, 'names': {'de': 'Sydney', 'en': 'Sydney', 'es': 'Sídney', 'fr': 'Sydney', 'ja': 'シドニー', 'pt-BR': 'Sydney', 'ru': 'Сидней', 'zh-CN': '悉尼'}},
+'continent': {'code': 'OC', 'geoname_id': 6255151, 
+'names': {'de': 'Ozeanien', 'en': 'Oceania', 'es': 'Oceanía', 'fr': 'Océanie', 'ja': 'オセアニア', 'pt-BR': 'Oceania', 'ru': 'Океания', 'zh-CN': '大洋洲'}}, 
+'country': {'geoname_id': 2077456, 'iso_code': 'AU', 'names': {'de': 'Australien', 'en': 'Australia',
+'es': 'Australia', 'fr': 'Australie', 'ja': 'オーストラリア', 'pt-BR': 'Austrália', 'ru': 'Австралия', 'zh-CN': '澳大利亚'}},
+'location': {'accuracy_radius': 500, 'latitude': -33.8591, 'longitude': 151.2002, 'time_zone': 'Australia/Sydney'}, 'postal': {'code': '2000'}, 
+'registered_country': {'geoname_id': 1861060, 'iso_code': 'JP', 'names': {'de': 'Japan', 'en': 'Japan', 'es': 'Japón', 'fr': 'Japon', 'ja': '日本', 'pt-BR': 'Japão', 'ru': 'Япония', 'zh-CN': '日本'}}, 
+'subdivisions': [{'geoname_id': 2155400, 'iso_code': 'NSW', 'names': {'en': 'New South Wales', 'fr': 'Nouvelle-Galles du Sud', 'pt-BR': 'Nova Gales do Sul', 
+'ru': 'Новый Южный Уэльс'}}]}```
+
 Sample images:
 
 ![layer 2 sample](examplelayer2.png)
