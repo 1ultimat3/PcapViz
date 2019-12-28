@@ -1,89 +1,3 @@
-NOTE: forked from mateuszk87/PcapViz
-december 2019 
-changed geoIP lookup to use maxminddb
-removed pygeoip dependency
-
-use:
-```
-pip3 install maxminddb
-```
-to install dependency
-
-Maxmind free GeoIP data available using:
-
-```
-wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
-```
-
-For zeek, you need to unpack the file and move GeoIP/GeoLite2-City.mmdb to 
-/usr/share/GeoIP/GeoLite2-City.mmdb so that's where I put mine.
-
-To test the geoip lookup, with my python3 virtualenv, I used:
-
-```
->python3
-Type "help", "copyright", "credits" or "license" for more information.
->>> import maxminddb
->>> reader = maxminddb.open_database('/usr/share/GeoIP/GeoLite2-City.mmdb')
->>> reader.get('137.59.252.179')
-{'city': {'geoname_id': 2147714, 'names': {'de': 'Sydney', 'en': 'Sydney', 'es': 'Sídney', 'fr': 'Sydney', 'ja': 'シドニー', 'pt-BR': 'Sydney', 'ru': 'Сидней', 'zh-CN': '悉尼'}},
-'continent': {'code': 'OC', 'geoname_id': 6255151, 
-'names': {'de': 'Ozeanien', 'en': 'Oceania', 'es': 'Oceanía', 'fr': 'Océanie', 'ja': 'オセアニア', 'pt-BR': 'Oceania', 'ru': 'Океания', 'zh-CN': '大洋洲'}}, 
-'country': {'geoname_id': 2077456, 'iso_code': 'AU', 'names': {'de': 'Australien', 'en': 'Australia',
-'es': 'Australia', 'fr': 'Australie', 'ja': 'オーストラリア', 'pt-BR': 'Austrália', 'ru': 'Австралия', 'zh-CN': '澳大利亚'}},
-'location': {'accuracy_radius': 500, 'latitude': -33.8591, 'longitude': 151.2002, 'time_zone': 'Australia/Sydney'}, 'postal': {'code': '2000'}, 
-'registered_country': {'geoname_id': 1861060, 'iso_code': 'JP', 'names': {'de': 'Japan', 'en': 'Japan', 'es': 'Japón', 'fr': 'Japon', 'ja': '日本', 'pt-BR': 'Japão', 'ru': 'Япония', 'zh-CN': '日本'}}, 
-'subdivisions': [{'geoname_id': 2155400, 'iso_code': 'NSW', 'names': {'en': 'New South Wales', 'fr': 'Nouvelle-Galles du Sud', 'pt-BR': 'Nova Gales do Sul', 
-'ru': 'Новый Южный Уэльс'}}]}
-```
-
-Some additional command line options are now available for the geoIP database path, the language for the geoIP lookup (default is en) and the Graphviz
-layout engine to use (default is sfdp to give compact layouts - dot gives **very** wide, flat images - there are half a dozen others to try.
-
-```
->python3 main.py -h
-
-usage: main.py [-h] [-i [PCAPS [PCAPS ...]]] [-o OUT] [-g GRAPHVIZ] [--layer2]
-               [--layer3] [--layer4] [-fi] [-fo] [-G] [-l] [-E]
-
-pcap topology drawer
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -i [PCAPS [PCAPS ...]], --pcaps [PCAPS [PCAPS ...]]
-                        capture files to be analyzed
-  -o OUT, --out OUT     topology will be stored in the specified file
-  -g GRAPHVIZ, --graphviz GRAPHVIZ
-                        graph will be exported to the specified file (dot
-                        format)
-  --layer2              create layer2 topology
-  --layer3              create layer3 topology
-  --layer4              create layer4 topology
-  -fi, --frequent-in    print frequently contacted nodes to stdout
-  -fo, --frequent-out   print frequent source nodes to stdout
-  -G, --geopath         path to maxmind geodb data
-  -l, --geolang         Language to use for geoIP names
-  -E, --layoutengine    Graph layout method - dot, sfdp etc.
-```
-
-Sample images (using dot layout in graphviz):
-
-**Layer2 with default sfdp layout**
-
-![layer 2 sample](examplelayer2.pdf)
-
-**Layer3 with default sfdp layout**
-
-![layer 3 sample](examplelayer3.pdf)
-
-**Layer4 with dot layout**
-
-![layer 4 sample](examplelayer4.pdf)
-
-
-Original notes follow below - example images and maxmind files no longer available and currently working
-instructions on getting the required maxmind data are shown above.
-
 # PcapViz
 PcapViz visualizes network topologies and provides graph statistics based on pcap files.
 It should be possible to determine key topological nodes or data exfiltration attempts more easily.
@@ -118,25 +32,23 @@ optional arguments:
 ```
 
 ## Example
-Example pcap: [smallFlows.pcap](http://tcpreplay.appneta.com/wiki/captures.html#smallflows-pcap)
 
 Drawing a communication graph (layer 2), segment:
 ```
-python main.py -i smallFlows.pcap -o small_tcp_l2.png --layer2
+python main.py -i tests/test.pcap -o test2.png --layer2
 ```
-![](https://gentle-wave-6212.herokuapp.com/static/pcapviz/layer2.png)
 
-Drawing a communication graph (layer 3), segment:
-```
-python main.py -i smallFlows.pcap -o small_tcp.png --layer3
-```
-![](https://gentle-wave-6212.herokuapp.com/static/pcapviz/layer3.png)
+![layer 2 sample](tests/test2.png)
 
-Drawing a communication graph (layer 4), segment:
-```
-python main.py -i smallFlows.pcap -o small_tcp_l4.png --layer4
-```
-![](https://gentle-wave-6212.herokuapp.com/static/pcapviz/layer4.png)
+**Layer3 with default sfdp layout**
+
+![layer 3 sample](tests/test3.png)
+
+**Layer4 with default sfdp layout**
+
+![layer 4 sample](tests/test4.png)
+
+
 
 Return most frequently contacted hosts:
 ```
@@ -162,8 +74,43 @@ python main.py -i smallFlows.pcap --layer3 --frequent-in
 Required:
  
  * GraphViz
- * Download GeoIP database to ~/GeoIP.dat (http://dev.maxmind.com/geoip/legacy/install/country/)
+ 
+Optional geoIP data:
 
+ * Maxmind data:
+```
+pip3 install maxminddb
+```
+to install the maxmind python API into your virtual environment
+
+The Maxmind free GeoIP data file is available at present using:
+
+```
+wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
+```
+
+For zeek, you need to unpack the file and move GeoIP/GeoLite2-City.mmdb to 
+/usr/share/GeoIP/GeoLite2-City.mmdb so that's a sensible place for it if you also use zeek. 
+Use the command line --geopath option to change the path if you use a different location.
+
+To test the geoip lookup, use an interactive shell:
+
+```
+>python3
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import maxminddb
+>>> reader = maxminddb.open_database('/usr/share/GeoIP/GeoLite2-City.mmdb')
+>>> reader.get('137.59.252.179')
+{'city': {'geoname_id': 2147714, 'names': {'de': 'Sydney', 'en': 'Sydney', 'es': 'Sídney', 'fr': 'Sydney', 'ja': 'シドニー', 'pt-BR': 'Sydney', 'ru': 'Сидней', 'zh-CN': '悉尼'}},
+'continent': {'code': 'OC', 'geoname_id': 6255151, 
+'names': {'de': 'Ozeanien', 'en': 'Oceania', 'es': 'Oceanía', 'fr': 'Océanie', 'ja': 'オセアニア', 'pt-BR': 'Oceania', 'ru': 'Океания', 'zh-CN': '大洋洲'}}, 
+'country': {'geoname_id': 2077456, 'iso_code': 'AU', 'names': {'de': 'Australien', 'en': 'Australia',
+'es': 'Australia', 'fr': 'Australie', 'ja': 'オーストラリア', 'pt-BR': 'Austrália', 'ru': 'Австралия', 'zh-CN': '澳大利亚'}},
+'location': {'accuracy_radius': 500, 'latitude': -33.8591, 'longitude': 151.2002, 'time_zone': 'Australia/Sydney'}, 'postal': {'code': '2000'}, 
+'registered_country': {'geoname_id': 1861060, 'iso_code': 'JP', 'names': {'de': 'Japan', 'en': 'Japan', 'es': 'Japón', 'fr': 'Japon', 'ja': '日本', 'pt-BR': 'Japão', 'ru': 'Япония', 'zh-CN': '日本'}}, 
+'subdivisions': [{'geoname_id': 2155400, 'iso_code': 'NSW', 'names': {'en': 'New South Wales', 'fr': 'Nouvelle-Galles du Sud', 'pt-BR': 'Nova Gales do Sul', 
+'ru': 'Новый Южный Уэльс'}}]}
+```
 In case you are using python3 install the following requirements:
 
 ```

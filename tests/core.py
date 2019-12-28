@@ -1,9 +1,26 @@
 import unittest
+import sys
+import os
+
+# finesse the imports - ugh - so we can run from the tests directory
+
+PACKAGE_PARENT = '..'
+SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from pcapviz.core import GraphManager
 from pcapviz.sources import ScapySource
 
 import os
+
+# hack to setup the test properly - need these for labels and such
+from argparse import ArgumentParser
+parser = ArgumentParser(description='pcap topology drawer')
+parser.add_argument('-G', '--geopath', default='/usr/share/GeoIP/GeoLite2-City.mmdb', help='path to maxmind geodb data')
+parser.add_argument('-l', '--geolang', default='en', help='Language to use for geoIP names')
+parser.add_argument('-E', '--layoutengine', default='sfdp', help='Graph layout method - dot, sfdp etc.')
+parser.add_argument('-i', '--pcaps', nargs='*', default='test.pcap', help='capture files to be analyzed')
+args = parser.parse_args()
 
 
 class PcapProcessingTests(unittest.TestCase):
@@ -14,28 +31,28 @@ class PcapProcessingTests(unittest.TestCase):
 
     def test_build_graph_layer2(self):
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets, layer=2)
+        g = GraphManager(packets, layer=2,args=args)
         self.assertEqual(3, g.graph.number_of_edges())
 
     def test_build_graph_layer3(self):
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets)
+        g = GraphManager(packets,args=args)
         self.assertEqual(8, g.graph.number_of_edges())
 
     def test_build_graph_layer4(self):
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets, layer=4)
+        g = GraphManager(packets, layer=4,args=args)
         self.assertEqual(36, g.graph.number_of_edges())
 
     def test_get_frequent_ips_in(self):
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets, layer=3)
+        g = GraphManager(packets, layer=3, args=args)
         ips = g.get_in_degree(print_stdout=True)
         self.assertIsNotNone(ips)
 
     def test_get_frequent_ips_out(self):
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets, layer=3)
+        g = GraphManager(packets, layer=3, args=args)
         ips = g.get_out_degree(print_stdout=True)
         self.assertIsNotNone(ips)
 
@@ -45,7 +62,7 @@ class PcapProcessingTests(unittest.TestCase):
         except OSError:
             pass
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets, layer=layer)
+        g = GraphManager(packets, layer=layer, args=args)
         g.draw(filename=png)
         self.assertTrue(os.path.exists(png))
 
@@ -58,30 +75,30 @@ class PcapProcessingTests(unittest.TestCase):
     def test_layer4(self):
         self._draw('test4.png', 4)
 
-    def test_retrieve_geoip(self):
+    def test_retrieve_geoip2(self):
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets, layer=2)
-        node = g.graph.nodes()[0]
+        g = GraphManager(packets, layer=2, args=args)
+        node = list(g.data.keys())[0]
         g._retrieve_node_info(node)
         self.assertNotIn('country', g.data[node])
 
-    def test_retrieve_geoip(self):
+    def test_retrieve_geoip3(self):
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets, layer=3)
-        node = g.graph.nodes()[0]
+        g = GraphManager(packets, layer=3, args=args)
+        node = list(g.data.keys())[0]
         g._retrieve_node_info(node)
         self.assertIn('country', g.data[node])
 
-    def test_retrieve_geoip(self):
+    def test_retrieve_geoip4(self):
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets, layer=4)
-        node = g.graph.nodes()[0]
+        g = GraphManager(packets, layer=4, args=args)
+        node = list(g.data.keys())[0]
         g._retrieve_node_info(node)
         self.assertIn('country', g.data[node])
 
     def test_graphviz(self):
         packets = ScapySource.load(['test.pcap'])
-        g = GraphManager(packets, layer=3)
+        g = GraphManager(packets, layer=3,args=args)
         self.assertIsNotNone(g.get_graphviz_format())
 
 
