@@ -1,3 +1,13 @@
+# NOTE: forked from mateuszk87/PcapViz
+# december 2019 
+# changed geoIP lookup to use maxminddb
+# samples
+[layer 2 sample](examplelayer2.png)
+[layer 3 sample](examplelayer3.png)
+[layer 4 sample](examplelayer4.png)
+
+
+
 # PcapViz
 PcapViz visualizes network topologies and provides graph statistics based on pcap files.
 It should be possible to determine key topological nodes or data exfiltration attempts more easily.
@@ -10,7 +20,7 @@ It should be possible to determine key topological nodes or data exfiltration at
 ## Usage
 ```
 usage: main.py [-h] [-i [PCAPS [PCAPS ...]]] [-o OUT] [-g GRAPHVIZ] [--layer2]
-               [--layer3] [--layer4] [-fi] [-fo]
+               [--layer3] [--layer4] [-fi] [-fo] 
 
 pcap topology drawer
 
@@ -27,6 +37,8 @@ optional arguments:
   --layer4              derive layer4 topology
   -fi, --frequent-in    print frequently contacted nodes to stdout
   -fo, --frequent-out   print frequent source nodes to stdout
+  -G, --geopath		path to maxminddb data default='/usr/share/GeoIP/GeoLite2-City.mmdb'
+  -l, --geolang		language code to use for city/country lookups default='en'
 ```
 
 ## Example
