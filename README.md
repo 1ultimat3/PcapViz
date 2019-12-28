@@ -2,7 +2,7 @@ NOTE: forked from mateuszk87/PcapViz
 december 2019 
 changed geoIP lookup to use maxminddb
 
-Data available using:
+Maxmind free GeoIP data available using:
 
 ```
 wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
@@ -39,6 +39,8 @@ Sample images:
 ![layer 4 sample](examplelayer4.png)
 
 
+Original notes follow below - example images and maxmind files no longer available and currently working
+instructions on getting the required maxmind data are shown above.
 
 # PcapViz
 PcapViz visualizes network topologies and provides graph statistics based on pcap files.
