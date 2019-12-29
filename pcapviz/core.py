@@ -156,11 +156,11 @@ class GraphManager(object):
 				# node might be deleted, because it's not legit etc.
 				continue
 			snode = str(node)
-			node.attr['shape'] = 'diamond'
+			node.attr['shape'] = self.args.shape
 			node.attr['fontsize'] = '10'
 			node.attr['width'] = '0.5'
 			node.attr['color'] = 'linen'
-			node.attr['style'] = 'rounded,filled'
+			node.attr['style'] = 'filled,rounded'
 			if 'country' in self.data[snode]:
 				country_label = self.data[snode]['country']
 				city_label = self.data[snode]['city']

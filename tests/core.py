@@ -20,6 +20,7 @@ parser.add_argument('-G', '--geopath', default='/usr/share/GeoIP/GeoLite2-City.m
 parser.add_argument('-l', '--geolang', default='en')
 parser.add_argument('-E', '--layoutengine', default='sfdp')
 parser.add_argument('-i', '--pcaps', nargs='*', default='test.pcap')
+parser.add_argument('-s', '--shape', default='diamond')
 args = parser.parse_args()
 
 

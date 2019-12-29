@@ -18,6 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('-G', '--geopath', default='/usr/share/GeoIP/GeoLite2-City.mmdb', help='path to maxmind geodb data')
     parser.add_argument('-l', '--geolang', default='en', help='Language to use for geoIP names')
     parser.add_argument('-E', '--layoutengine', default='sfdp', help='Graph layout method - dot, sfdp etc.')
+    parser.add_argument('-s', '--shape', default='diamond', help='Graphviz node shape - circle, diamond, box etc.')
     args = parser.parse_args()
 
     if args.pcaps:
