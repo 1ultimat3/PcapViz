@@ -8,7 +8,7 @@ exfiltration attempts more easily.
 
 ## Features
 - Draw network topologies (Layer 2) and communication graphs (Layer 3 and 4)
-- Network topologies contain country information and connection stats
+- Communication graph node labels show country information and connection stats
 - Collect statistics such as most frequently contacted machines
 - Node labels include the host domain name if available from a reverse DNS lookup 
 
