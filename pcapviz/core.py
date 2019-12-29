@@ -74,12 +74,15 @@ class GraphManager(object):
 		unsorted_degrees = self.graph.out_degree()
 		return self._sorted_results(unsorted_degrees, print_stdout)
 
-	@staticmethod
-	def _sorted_results(unsorted_degrees, print_stdout):
+	def _sorted_results(self,unsorted_degrees, print_stdout):
 		sorted_degrees = OrderedDict(sorted(list(unsorted_degrees), key=lambda t: t[1], reverse=True))
 		for i in sorted_degrees:
 			if print_stdout:
-				print(sorted_degrees[i], i)
+				nn = self.lookup(i)
+				if (nn == i):
+					print(sorted_degrees[i], i)
+				else:
+					print(sorted_degrees[i],i,nn)
 		return sorted_degrees
 
 	def _retrieve_node_info(self, node):

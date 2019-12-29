@@ -1,6 +1,8 @@
 # PcapViz
-PcapViz visualizes network topologies and provides graph statistics based on pcap files.
-It should be possible to determine key topological nodes or data exfiltration attempts more easily.
+PcapViz visualizes network topologies and provides graph statistics based on pcap files. It separates out each of ISO layers 2,3 and 4
+to be graphed separately making it much easier to see the data flows at each level rather than mixing them up as most other
+packages do. It should be possible to determine key topological nodes or to spot patterns of data exfiltration attempts more easily.
+
 
 ## Features
 - Draw network topologies (Layer 2) and communication graphs (Layer 3 and 4)
@@ -12,7 +14,7 @@ It should be possible to determine key topological nodes or data exfiltration at
 ```
 usage: main.py [-h] [-i [PCAPS [PCAPS ...]]] [-o OUT] [-g GRAPHVIZ] [--layer2]
                [--layer3] [--layer4] [-fi] [-fo] [-G GEOPATH] [-l GEOLANG]
-               [-E LAYOUTENGINE]
+               [-E LAYOUTENGINE] [-s SHAPE]
 
 pcap topology drawer
 
@@ -35,6 +37,8 @@ optional arguments:
                         Language to use for geoIP names
   -E LAYOUTENGINE, --layoutengine LAYOUTENGINE
                         Graph layout method - dot, sfdp etc.
+  -s SHAPE, --shape SHAPE
+                        Graphviz node shape - circle, diamond, box etc.
 
 ```
 
