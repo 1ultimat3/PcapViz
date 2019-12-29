@@ -1,3 +1,13 @@
+
+"""
+ross lazarus december 2019 
+forked from mateuszk87/PcapViz
+changed geoIP lookup to use maxminddb
+added reverse DNS lookup and cache with host names added to node labels
+added CL parameters to adjust image layout and shapes
+"""
+
+
 from collections import OrderedDict
 
 import networkx
@@ -10,12 +20,6 @@ import logging
 import os
 import socket
 import maxminddb
-
-"""
-ross lazarus december 2019 forked from mateuszk87/PcapViz
-changed geoIP lookup to use maxminddb
-added reverse DNS lookup and cache
-"""
 
 
 

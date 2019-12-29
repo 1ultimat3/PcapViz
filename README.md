@@ -1,16 +1,18 @@
 # PcapViz
-PcapViz visualizes network topologies and provides graphs and simple statistics based on pcap files. 
-It separates out device traffic, ip communication and tcp/udp communication into separate graphs making it much easier to see 
-the data flows at each level rather than mixing them up as most other packages do. 
-It should be possible to determine key topological nodes or to spot patterns of data 
-exfiltration attempts more easily.
+PcapViz draws networks as device topologies and as information flows using the packet information in pcap files captured from a network
+device using tcpcap or other capture software. It filters and optionally displays the captured packets at any one of 3 "levels". These do
+not exactly correspond to the OSI model being device level traffic, ip communication and tcp/udp communication respectively. 
+Each yields a distinct network graph. This separation makies it much easier to see the data flows at each level rather than mixing them up 
+as many other visualisation packages do. It should be possible to determine key topological nodes or to spot patterns of data exfiltration attempts more easily.
 
 
 ## Features
-- Draw network topology: 2 = device and communication graphs: 3 = ip; 4 = tcp/udp)
+- Network topology graphs - 2 = device; conversation information flow graphs: 3 = ip, 4 = tcp/udp
 - Communication graph node labels show country information and connection stats
 - Lists the most frequently contacted and frequently sending machines
-- Node labels include the host domain name if available from a reverse DNS lookup 
+- Node labels include the host domain name if available from a reverse DNS lookup. 
+- command line choice of Graphviz graph layout engine such as dot or sfdp.
+
 
 ## Usage
 
@@ -44,7 +46,7 @@ optional arguments:
                         Graphviz node shape - circle, diamond, box etc.
 ```
 
-## Examples
+## Examples from running tests/core.py on the test.pcap file
 
 **Drawing a communication graph (layer 2), segment**
 ```
