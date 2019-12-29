@@ -1,7 +1,9 @@
 # PcapViz
-PcapViz visualizes network topologies and provides graph statistics based on pcap files. It separates out each of ISO layers 2,3 and 4
-to be graphed separately making it much easier to see the data flows at each level rather than mixing them up as most other
-packages do. It should be possible to determine key topological nodes or to spot patterns of data exfiltration attempts more easily.
+PcapViz visualizes network topologies and provides graphs and simple statistics based on pcap files. 
+It separates out each of ISO layers 2,3 and 4 to be graphed separately making it much easier to see 
+the data flows at each level rather than mixing them up as most other packages do. 
+It should be possible to determine key topological nodes or to spot patterns of data 
+exfiltration attempts more easily.
 
 
 ## Features

@@ -1,5 +1,5 @@
 scapy
 matplotlib
 networkx
-pygeoip
+maxminddb
 pygraphviz
