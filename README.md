@@ -69,8 +69,7 @@ python3 main.py -i tests/test.pcap -fi --layer3
 1 216.34.181.45 slashdot.org
 1 172.16.11.1
 1 96.17.211.172 a96-17-211-172.deploy.static.akamaitechnologies.com
-...
-
+```
 
 ## Installation
 
