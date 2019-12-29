@@ -153,3 +153,8 @@ The sample images above are the test output graphs.
 Note that there are at present 2 warnings about deprecated features in graphviz and for tests to work, you may need to adjust the fake args to point to your copy of the geoIP data file.
 Without access to the geoIP data, two of the tests will always fail.
 
+## Acknowledgement
+Maxmind ask that this be included - even though we do not distribute the data here it is...
+
+This product includes GeoLite2 data created by MaxMind, available from
+<a href="https://www.maxmind.com">https://www.maxmind.com</a>.

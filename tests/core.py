@@ -10,18 +10,20 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from pcapviz.core import GraphManager
 from pcapviz.sources import ScapySource
+from main import args
+args.pcaps = 'test.pcap'
 
 import os
 
-# hack to setup the test properly - need these for labels and such
-from argparse import ArgumentParser
-parser = ArgumentParser(description='pcap topology drawer')
-parser.add_argument('-G', '--geopath', default='/usr/share/GeoIP/GeoLite2-City.mmdb')
-parser.add_argument('-l', '--geolang', default='en')
-parser.add_argument('-E', '--layoutengine', default='sfdp')
-parser.add_argument('-i', '--pcaps', nargs='*', default='test.pcap')
-parser.add_argument('-s', '--shape', default='diamond')
-args = parser.parse_args()
+# # hack to setup the test properly - need these for labels and such
+# from argparse import ArgumentParser
+# parser = ArgumentParser(description='pcap topology drawer')
+# parser.add_argument('-G', '--geopath', default='/usr/share/GeoIP/GeoLite2-City.mmdb')
+# parser.add_argument('-l', '--geolang', default='en')
+# parser.add_argument('-E', '--layoutengine', default='sfdp')
+# parser.add_argument('-i', '--pcaps', nargs='*', default='test.pcap')
+# parser.add_argument('-s', '--shape', default='diamond')
+# args = parser.parse_args()
 
 
 class PcapProcessingTests(unittest.TestCase):
