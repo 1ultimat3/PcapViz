@@ -60,7 +60,7 @@ python main.py -i tests/test.pcap -o test2.png --layer2
 ![layer 4 sample](tests/test4.png)
 
 
-Return most frequently contacted hosts:
+Return hosts with largest numbers of incoming packets:
 
 ```
 python3 main.py -i tests/test.pcap -fi --layer3
