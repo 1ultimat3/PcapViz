@@ -16,10 +16,10 @@ import os
 # hack to setup the test properly - need these for labels and such
 from argparse import ArgumentParser
 parser = ArgumentParser(description='pcap topology drawer')
-parser.add_argument('-G', '--geopath', default='/usr/share/GeoIP/GeoLite2-City.mmdb', help='path to maxmind geodb data')
-parser.add_argument('-l', '--geolang', default='en', help='Language to use for geoIP names')
-parser.add_argument('-E', '--layoutengine', default='sfdp', help='Graph layout method - dot, sfdp etc.')
-parser.add_argument('-i', '--pcaps', nargs='*', default='test.pcap', help='capture files to be analyzed')
+parser.add_argument('-G', '--geopath', default='/usr/share/GeoIP/GeoLite2-City.mmdb')
+parser.add_argument('-l', '--geolang', default='en')
+parser.add_argument('-E', '--layoutengine', default='sfdp')
+parser.add_argument('-i', '--pcaps', nargs='*', default='test.pcap')
 args = parser.parse_args()
 
 

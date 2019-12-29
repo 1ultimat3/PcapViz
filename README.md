@@ -155,7 +155,8 @@ Unit tests can be run from the tests directory:
 ```
 python3 core.py
 ```
-The sample images above are test outputs.
+The sample images above are the test output graphs.
 
 Note that there are at present 2 warnings about deprecated features in graphviz and for tests to work, you may need to adjust the fake args to point to your copy of the geoIP data file.
+Without access to the geoIP data, two of the tests will always fail.
 
