@@ -58,10 +58,10 @@ class GraphManager(object):
 			self._retrieve_edge_info(src, dst)
 
 	def lookup(self,ip):
-		"""deens caches all slow! fqdn reverse dns lookups from ip"""
+		"""deeNS caches all slow! fqdn reverse dns lookups from ip"""
 		kname = self.deeNS.get(ip,None)
 		if kname == None:
-			kname = socket.getfqdn(ip) # PIA dns is slow!!
+			kname = socket.getfqdn(ip) 
 			self.deeNS[ip] = kname
 		return (kname)
 
@@ -107,8 +107,9 @@ class GraphManager(object):
 				self.data[node]['country'] = country if country else 'private'
 				self.data[node]['city'] = city if city else 'private'
 			except:
+				logging.debug("could not load GeoIP data for node %s" % node_ip)
 				# no lookup so not much data available
-				del self.data[node]
+				#del self.data[node]
 				
 		#TODO layer 2 info?
 
@@ -159,6 +160,7 @@ class GraphManager(object):
 				# node might be deleted, because it's not legit etc.
 				continue
 			snode = str(node)
+			nnode = self.lookup(snode)
 			node.attr['shape'] = self.args.shape
 			node.attr['fontsize'] = '10'
 			node.attr['width'] = '0.5'
@@ -167,12 +169,10 @@ class GraphManager(object):
 			if 'country' in self.data[snode]:
 				country_label = self.data[snode]['country']
 				city_label = self.data[snode]['city']
-				nnode = self.lookup(snode)
 				if nnode != snode:
 					nodelab = '%s\n%s' % (nnode,snode)
 				else:
 					nodelab = snode
-					
 				if country_label != 'private':
 					if city_label == 'private':
 						nodelab += "\n(%s)" % (country_label)
@@ -187,7 +187,7 @@ class GraphManager(object):
 			edge.attr['label'] = 'transmitted: %i bytes\n%s ' % (connection['transmitted'], ' | '.join(connection['layers']))
 			edge.attr['fontsize'] = '8'
 			edge.attr['minlen'] = '2'
-			edge.attr['penwidth'] = min(connection['connections'] * 1.0 / len(self.graph.nodes()), 2.0)
+			edge.attr['penwidth'] = min(max(0.05,connection['connections'] * 1.0 / len(self.graph.nodes())), 2.0)
 		graph.layout(prog=self.args.layoutengine)
 		graph.draw(filename)
 

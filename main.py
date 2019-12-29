@@ -5,7 +5,7 @@ from pcapviz.sources import ScapySource
 
 # make this global so we can use it for tests
 
-parser = ArgumentParser(description='pcap topology drawer')
+parser = ArgumentParser(description='pcap topology and message mapper')
 parser.add_argument('-i', '--pcaps', nargs='*', default='test/test.pcap',help='space delimited list of capture files to be analyzed')
 parser.add_argument('-o', '--out', help='topology will be stored in the specified file')
 parser.add_argument('-g', '--graphviz', help='graph will be exported to the specified file (dot format)')
