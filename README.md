@@ -60,25 +60,17 @@ python main.py -i tests/test.pcap -o test2.png --layer2
 ![layer 4 sample](tests/test4.png)
 
 
-
 Return most frequently contacted hosts:
-```
-python main.py -i smallFlows.pcap --layer3 --frequent-in
 
-115 172.16.255.1
-70 192.168.3.131
-21 10.0.2.15
-2 65.55.15.244
-2 224.0.0.252
-2 192.168.3.90
-2 239.255.255.250
-2 255.255.255.255
-1 178.144.253.171
-1 92.247.222.20
-1 72.14.213.103
-1 67.170.187.174
+```
+python3 main.py -i tests/test.pcap -fi --layer3
+4 172.16.11.12
+1 74.125.19.17
+1 216.34.181.45 slashdot.org
+1 172.16.11.1
+1 96.17.211.172 a96-17-211-172.deploy.static.akamaitechnologies.com
 ...
-````
+
 
 ## Installation
 
@@ -111,7 +103,13 @@ To test the geoip lookup, use an interactive shell:
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import maxminddb
 >>> reader = maxminddb.open_database('/usr/share/GeoIP/GeoLite2-City.mmdb')
->>> reader.get('137.59.252.179')
+>>> reader.get('137.59.252.179')python3 main.py -i tests/test.pcap -fi --layer3
+4 172.16.11.12
+1 74.125.19.17
+1 216.34.181.45 slashdot.org
+1 172.16.11.1
+1 96.17.211.172 a96-17-211-172.deploy.static.akamaitechnologies.com
+
 {'city': {'geoname_id': 2147714, 'names': {'de': 'Sydney', 'en': 'Sydney', 'es': 'Sídney', 'fr': 'Sydney', 'ja': 'シドニー', 'pt-BR': 'Sydney', 'ru': 'Сидней', 'zh-CN': '悉尼'}},
 'continent': {'code': 'OC', 'geoname_id': 6255151, 
 'names': {'de': 'Ozeanien', 'en': 'Oceania', 'es': 'Oceanía', 'fr': 'Océanie', 'ja': 'オセアニア', 'pt-BR': 'Oceania', 'ru': 'Океания', 'zh-CN': '大洋洲'}}, 
