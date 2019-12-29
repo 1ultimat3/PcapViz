@@ -1,15 +1,15 @@
 # PcapViz
 PcapViz visualizes network topologies and provides graphs and simple statistics based on pcap files. 
-It separates out each of ISO layers 2,3 and 4 to be graphed separately making it much easier to see 
+It separates out device traffic, ip communication and tcp/udp communication into separate graphs making it much easier to see 
 the data flows at each level rather than mixing them up as most other packages do. 
 It should be possible to determine key topological nodes or to spot patterns of data 
 exfiltration attempts more easily.
 
 
 ## Features
-- Draw network topologies (Layer 2) and communication graphs (Layer 3 and 4)
+- Draw network topology: 2 = device and communication graphs: 3 = ip; 4 = tcp/udp)
 - Communication graph node labels show country information and connection stats
-- Collect statistics such as most frequently contacted machines
+- Lists the most frequently contacted and frequently sending machines
 - Node labels include the host domain name if available from a reverse DNS lookup 
 
 ## Usage
@@ -19,19 +19,19 @@ usage: main.py [-h] [-i [PCAPS [PCAPS ...]]] [-o OUT] [-g GRAPHVIZ] [--layer2]
                [--layer3] [--layer4] [-fi] [-fo] [-G GEOPATH] [-l GEOLANG]
                [-E LAYOUTENGINE] [-s SHAPE]
 
-pcap topology drawer
+pcap topology and message mapper
 
 optional arguments:
   -h, --help            show this help message and exit
   -i [PCAPS [PCAPS ...]], --pcaps [PCAPS [PCAPS ...]]
-                        capture files to be analyzed
+                        space delimited list of capture files to be analyzed
   -o OUT, --out OUT     topology will be stored in the specified file
   -g GRAPHVIZ, --graphviz GRAPHVIZ
                         graph will be exported to the specified file (dot
                         format)
-  --layer2              create layer2 topology
-  --layer3              create layer3 topology
-  --layer4              create layer4 topology
+  --layer2              device topology network graph
+  --layer3              ip message graph. Default
+  --layer4              tcp/udp message graph
   -fi, --frequent-in    print frequently contacted nodes to stdout
   -fo, --frequent-out   print frequent source nodes to stdout
   -G GEOPATH, --geopath GEOPATH
@@ -42,7 +42,6 @@ optional arguments:
                         Graph layout method - dot, sfdp etc.
   -s SHAPE, --shape SHAPE
                         Graphviz node shape - circle, diamond, box etc.
-
 ```
 
 ## Examples
@@ -81,18 +80,21 @@ python3 main.py -i tests/test.pcap -fi --layer3
  
  * GraphViz
      See system notes below
- 
-**Not exactly required so Optional** - 2 tests will fail and you'll see no country/city data:
-
- * [geoIP data](https://dev.maxmind.com/geoip/geoip2/geolite2/):
-
-	The Maxmind Python API is installed when you run:
+     
+ * Pip package requirements
+    The Maxmind Python API and other dependencies will be installed when you run:
 	
 	```
 	pip3 install -r requirements.txt
 	```
 
 	so of course, please run that! You are using a python virtual environment aren't you?
+	
+ 
+**Not exactly required so Optional** - 2 tests will fail and you'll see no country/city data:
+
+ * [geoIP data](https://dev.maxmind.com/geoip/geoip2/geolite2/):
+
 	
 	The Maxmind free GeoIPlite data file is available (at present) using:
 
