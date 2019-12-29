@@ -69,6 +69,7 @@ python3 main.py -i tests/test.pcap -fi --layer3
 1 216.34.181.45 slashdot.org
 1 172.16.11.1
 1 96.17.211.172 a96-17-211-172.deploy.static.akamaitechnologies.com
+
 ```
 
 ## Installation
@@ -102,13 +103,7 @@ To test the geoip lookup, use an interactive shell:
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import maxminddb
 >>> reader = maxminddb.open_database('/usr/share/GeoIP/GeoLite2-City.mmdb')
->>> reader.get('137.59.252.179')python3 main.py -i tests/test.pcap -fi --layer3
-4 172.16.11.12
-1 74.125.19.17
-1 216.34.181.45 slashdot.org
-1 172.16.11.1
-1 96.17.211.172 a96-17-211-172.deploy.static.akamaitechnologies.com
-
+>>> reader.get('137.59.252.179')
 {'city': {'geoname_id': 2147714, 'names': {'de': 'Sydney', 'en': 'Sydney', 'es': 'Sídney', 'fr': 'Sydney', 'ja': 'シドニー', 'pt-BR': 'Sydney', 'ru': 'Сидней', 'zh-CN': '悉尼'}},
 'continent': {'code': 'OC', 'geoname_id': 6255151, 
 'names': {'de': 'Ozeanien', 'en': 'Oceania', 'es': 'Oceanía', 'fr': 'Océanie', 'ja': 'オセアニア', 'pt-BR': 'Oceania', 'ru': 'Океания', 'zh-CN': '大洋洲'}}, 
@@ -119,6 +114,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 'subdivisions': [{'geoname_id': 2155400, 'iso_code': 'NSW', 'names': {'en': 'New South Wales', 'fr': 'Nouvelle-Galles du Sud', 'pt-BR': 'Nova Gales do Sul', 
 'ru': 'Новый Южный Уэльс'}}]}
 ```
+
 In case you are using python3 install the following requirements:
 
 ```
