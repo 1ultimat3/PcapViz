@@ -81,13 +81,15 @@ Required:
  
  * GraphViz
  
-Optional geoIP data:
+Optional 
 
- * Maxmind data:
+ * [geoIP data](https://dev.maxmind.com/geoip/geoip2/geolite2/):
+
+Install the Maxmind Python API:
 ```
 pip3 install maxminddb
 ```
-to install the maxmind python API into your virtual environment
+into your virtual environment. You are using a python virtual environment aren't you?
 
 The Maxmind free GeoIP data file is available at present using:
 
@@ -96,8 +98,8 @@ wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
 ```
 
 For zeek, you need to unpack the file and move GeoIP/GeoLite2-City.mmdb to 
-/usr/share/GeoIP/GeoLite2-City.mmdb so that's a sensible place for it if you also use zeek. 
-Use the command line --geopath option to change the path if you use a different location.
+/usr/share/GeoIP/GeoLite2-City.mmdb so that's a sensible place for it if you also use zeek
+so that's the default. Use the command line --geopath option to change the path if you use a different location.
 
 To test the geoip lookup, use an interactive shell:
 
@@ -118,16 +120,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 'ru': 'Новый Южный Уэльс'}}]}
 ```
 
-In case you are using python3 install the following requirements:
+For python3 install the following requirements:
 
 ```
 pip install -r requirements.txt
-```
-
-Python2.x requirements can be installed as follows:
-
-```
-pip install -r requirements_python2.txt
 ```
 
 ### Installation Debian
