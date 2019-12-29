@@ -77,12 +77,12 @@ python3 main.py -i tests/test.pcap -fi --layer3
 
 ## Installation
 
-Required:
+**Required:**
  
  * GraphViz
      See system notes below
  
-Not exactly required so Optional - 2 tests will fail and you'll see no country/city data:
+**Not exactly required so Optional** - 2 tests will fail and you'll see no country/city data:
 
  * [geoIP data](https://dev.maxmind.com/geoip/geoip2/geolite2/):
 
