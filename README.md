@@ -1,8 +1,12 @@
 # PcapViz
 PcapViz draws networks as device topologies and as information flows using the packet information in pcap files captured from a network
-device using tcpcap or other capture software. It filters and optionally displays the captured packets at any one of 3 "levels". These do
-not exactly correspond to the OSI model being device level traffic, ip communication and tcp/udp communication respectively. 
-Each yields a distinct network graph. This separation makies it much easier to see the data flows at each level rather than mixing them up 
+device using tcpcap or other capture software. It filters and optionally displays the captured packets at any one of 3 "layers". These are:
+
+ - device level traffic topology, 
+ - ip communication and 
+ - tcp/udp communication 
+
+Each yields a distinct network graph from the same set of network packets. This separation makies it much easier to see the data flows at each level rather than mixing them up 
 as many other visualisation packages do. It should be possible to determine key topological nodes or to spot patterns of data exfiltration attempts more easily.
 
 
