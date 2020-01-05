@@ -108,6 +108,11 @@ python3 main.py -i tests/test.pcap -fi --layer3
 	wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz
 	```
 
+    NOTE: As of January 2020, 
+    '''wget https://web.archive.org/web/20191227182209/https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz'''
+    is the easiest place to find a copy
+    
+
 	For zeek, you need to unpack the file and move GeoIP/GeoLite2-City.mmdb. Zeek uses
 	/usr/share/GeoIP/GeoLite2-City.mmdb so that seems a sensible choice and is the default. 
 	Use the command line --geopath option to change the path if you use a different location.
