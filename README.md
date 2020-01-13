@@ -110,7 +110,7 @@ python3 main.py -i tests/test.pcap -fi --layer3
 
     NOTE: As of January 2020, 
     '''wget https://web.archive.org/web/20191227182209/https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz'''
-    is the easiest place to find a copy
+    is the easiest place to find a copy of the last release under an OS licence.
     
 
 	For zeek, you need to unpack the file and move GeoIP/GeoLite2-City.mmdb. Zeek uses

@@ -15,6 +15,8 @@ import itertools
 from networkx import DiGraph
 
 from scapy.layers.inet import TCP, IP, UDP
+from scapy.all import *
+from scapy.layers.http import *
 import logging
 
 import os
