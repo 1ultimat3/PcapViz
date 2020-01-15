@@ -1,3 +1,13 @@
+
+"""
+ross lazarus december 2019 
+forked from mateuszk87/PcapViz
+changed geoIP lookup to use maxminddb
+added reverse DNS lookup and cache with host names added to node labels
+added CL parameters to adjust image layout and shapes
+"""
+
+
 from collections import OrderedDict
 
 import networkx
@@ -5,15 +15,15 @@ import itertools
 from networkx import DiGraph
 
 from scapy.layers.inet import TCP, IP, UDP
+from scapy.all import *
+from scapy.layers.http import *
 import logging
 
 import os
+import socket
 import maxminddb
 
-"""
-ross lazarus december 2019 forked from mateuszk87/PcapViz
-changed geoIP lookup to use maxminddb
-"""
+
 
 class GraphManager(object):
 	""" Generates and processes the graph based on packets
@@ -25,6 +35,7 @@ class GraphManager(object):
 		self.geo_ip = None
 		self.args = args
 		self.data = {}
+		self.deeNS = {} # cache for reverse lookups
 		try:
 			self.geo_ip = maxminddb.open_database(self.args.geopath) # command line -G
 		except:
@@ -52,6 +63,15 @@ class GraphManager(object):
 		for src, dst in self.graph.edges():
 			self._retrieve_edge_info(src, dst)
 
+	def lookup(self,ip):
+		"""deeNS caches all slow! fqdn reverse dns lookups from ip"""
+		kname = self.deeNS.get(ip,None)
+		if kname == None:
+			kname = socket.getfqdn(ip) 
+			self.deeNS[ip] = kname
+		return (kname)
+
+
 	def get_in_degree(self, print_stdout=True):
 		unsorted_degrees = self.graph.in_degree()
 		return self._sorted_results(unsorted_degrees, print_stdout)
@@ -60,12 +80,15 @@ class GraphManager(object):
 		unsorted_degrees = self.graph.out_degree()
 		return self._sorted_results(unsorted_degrees, print_stdout)
 
-	@staticmethod
-	def _sorted_results(unsorted_degrees, print_stdout):
+	def _sorted_results(self,unsorted_degrees, print_stdout):
 		sorted_degrees = OrderedDict(sorted(list(unsorted_degrees), key=lambda t: t[1], reverse=True))
 		for i in sorted_degrees:
 			if print_stdout:
-				print(sorted_degrees[i], i)
+				nn = self.lookup(i)
+				if (nn == i):
+					print(sorted_degrees[i], i)
+				else:
+					print(sorted_degrees[i],i,nn)
 		return sorted_degrees
 
 	def _retrieve_node_info(self, node):
@@ -90,8 +113,9 @@ class GraphManager(object):
 				self.data[node]['country'] = country if country else 'private'
 				self.data[node]['city'] = city if city else 'private'
 			except:
+				logging.debug("could not load GeoIP data for node %s" % node_ip)
 				# no lookup so not much data available
-				del self.data[node]
+				#del self.data[node]
 				
 		#TODO layer 2 info?
 
@@ -133,26 +157,34 @@ class GraphManager(object):
 			return "%s:%i" % (src, _.sport), "%s:%i" % (dst, _.dport), packet
 
 	def draw(self, filename=None):
+		self.graph.label ="Layer %d traffic graph for packets from %s" % (self.layer,str(self.args.pcaps))
+
 		graph = self.get_graphviz_format()
+		
 		for node in graph.nodes():
 			if node not in self.data:
 				# node might be deleted, because it's not legit etc.
 				continue
-			node.attr['shape'] = 'circle'
+			snode = str(node)
+			nnode = self.lookup(snode)
+			node.attr['shape'] = self.args.shape
 			node.attr['fontsize'] = '10'
 			node.attr['width'] = '0.5'
 			node.attr['color'] = 'linen'
-			node.attr['style'] = 'filled'
-			if 'country' in self.data[str(node)]:
-				country_label = self.data[str(node)]['country']
-				city_label = self.data[str(node)]['city']
-				if country_label == 'private':
-					node.attr['label'] = str(node)
+			node.attr['style'] = 'filled,rounded'
+			if 'country' in self.data[snode]:
+				country_label = self.data[snode]['country']
+				city_label = self.data[snode]['city']
+				if nnode != snode:
+					nodelab = '%s\n%s' % (nnode,snode)
 				else:
+					nodelab = snode
+				if country_label != 'private':
 					if city_label == 'private':
-						node.attr['label'] = "%s\n(%s)" % (str(node), country_label)
+						nodelab += "\n(%s)" % (country_label)
 					else:
-						node.attr['label'] = "%s\n(%s %s)" % (str(node), country_label, city_label)
+						nodelab += "\n(%s, %s)" % (city_label, country_label)
+				node.attr['label'] = nodelab
 				if not (country_label == 'private'):
 					node.attr['color'] = 'lightyellow'
 					#TODO add color based on country or scan?
@@ -161,9 +193,8 @@ class GraphManager(object):
 			edge.attr['label'] = 'transmitted: %i bytes\n%s ' % (connection['transmitted'], ' | '.join(connection['layers']))
 			edge.attr['fontsize'] = '8'
 			edge.attr['minlen'] = '2'
-			edge.attr['penwidth'] = min(connection['connections'] * 1.0 / len(self.graph.nodes()), 2.0)
-
-		graph.layout(prog='dot')
+			edge.attr['penwidth'] = min(max(0.05,connection['connections'] * 1.0 / len(self.graph.nodes())), 2.0)
+		graph.layout(prog=self.args.layoutengine)
 		graph.draw(filename)
 
 	def get_graphviz_format(self, filename=None):
